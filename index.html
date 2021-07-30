@@ -4,6 +4,19 @@
 <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
 
 <style>
+    body {
+        margin: auto !important;
+        overflow: hidden;
+    }
+    
+    .container {
+        position: fixed;
+        top: 10px;
+        width: 100%;
+        text-align: center;
+        z-index: 1;
+    }
+    
     .btn {
         color: hsl(0, 0%, 100%);
         padding: 9px;
@@ -18,10 +31,9 @@
         border: 3px solid hsl(176, 68%, 64%);
         outline: none;
         box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-        transition: background-color 0.2s ease-out,
-            color 0.2s ease-out;
+        transition: background-color 0.2s ease-out, color 0.2s ease-out;
     }
-
+    
     .btn:hover,
     .btn:active {
         background-color: hsl(176, 68%, 64%);
@@ -31,27 +43,38 @@
         border-color: hsl(219, 30%, 18%);
         font-weight: bold;
         font-size: 12px;
-        transition: background-color 0.3s ease-in,
-            color 0.3s ease-in;
+        transition: background-color 0.3s ease-in, color 0.3s ease-in;
+    }
+    
+    @media screen and (min-width: 200px) and (max-width:580px) {
+        .btn {
+            color: hsl(0, 0%, 100%);
+            padding: 4px;
+            display: inline-block;
+            font-size: 10px;
+        }
+        .btn:hover,
+        .btn:active {
+            padding: 4px;
+            font-size: 10px;
+        }
     }
 </style>
 
 <!-- <body> -->
-<div style='position: fixed; top: 10px; width:100%; text-align: center; z-index: 1;'>
-    <!-- Botones en la parte superior -->
-    <a class="btn" id="btn1">Grupo1</a>
-    <a class="btn" id="btn2">Grupo2</a>
-    <a class="btn" id="btn3">Grupo3</a>
-</div>
+
 <!-- esta es la Aplicación AR como tal -->
 
-<body style="margin : 0px; overflow: hidden;">
-    <a-scene vr-mode-ui="enabled: false" loading-screen="enabled: false;"
-        arjs='sourceType: webcam; debugUIEnabled: false;' id="scene" embedded gesture-detector>
+<body>
+    <div class="container">
+        <!-- Botones en la parte superior -->
+        <a class="btn" id="btn1">Grupo1</a>
+        <a class="btn" id="btn2">Grupo2</a>
+        <a class="btn" id="btn3">Grupo3</a>
+    </div>
+    <a-scene vr-mode-ui="enabled: false" loading-screen="enabled: false;" arjs='sourceType: webcam; debugUIEnabled: false;' id="scene" embedded gesture-detector>
         <!-- <a-marker preset="hiro" id="marker"></a-marker> -->
-        <a-marker preset="hiro" id="marker" type="pattern" videohandler smooth="true" smoothCount="10"
-            smoothTolerance="0.01" smoothThreshold="5" raycaster="objects: .clickable" emitevents="true"
-            cursor="fuse: false; rayOrigin: mouse;"></a-marker>
+        <a-marker preset="hiro" id="marker" type="pattern" videohandler smooth="true" smoothCount="10" smoothTolerance="0.01" smoothThreshold="5" raycaster="objects: .clickable" emitevents="true" cursor="fuse: false; rayOrigin: mouse;"></a-marker>
         <a-entity camera></a-entity>
     </a-scene>
 </body>
@@ -66,6 +89,7 @@
     var aVideo = null
 
     eventListeners()
+
     function eventListeners() {
         document.addEventListener('DOMContentLoaded', startedApp)
         document.querySelector('#btn1').addEventListener('click', clickBtnOne)
@@ -113,7 +137,7 @@
         elementV.setAttribute('croosOrigin', "anonymous")
         elementV.setAttribute('preload', "auto")
         elementV.setAttribute("response-type", "arraybuffer")
-        // elementV.setAttribute("autoplay", "autoplay")
+            // elementV.setAttribute("autoplay", "autoplay")
         elementV.setAttribute("scale", '10 10 10');
         aMarker.appendChild(elementV)
 
@@ -168,7 +192,6 @@
             aMarker.removeChild(aMarker.firstChild)
         }
     }
-
 </script>
 
 
