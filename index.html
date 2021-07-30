@@ -137,7 +137,6 @@
         elementV.setAttribute('croosOrigin', "anonymous")
         elementV.setAttribute('preload', "auto")
         elementV.setAttribute("response-type", "arraybuffer")
-            // elementV.setAttribute("autoplay", "autoplay")
         elementV.setAttribute("scale", '10 10 10');
         aMarker.appendChild(elementV)
 
@@ -168,7 +167,6 @@
     statusVideo.addEventListener("markerLost", (e) => {
         aVideo = document.querySelector("a-video")
         if (aVideo !== null) {
-            //console.log('video', document.querySelector("#video"))
             var v = document.querySelector("#video").pause();
         }
     })
