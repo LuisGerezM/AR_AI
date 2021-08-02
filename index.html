@@ -1,131 +1,150 @@
 <!DOCTYPE html>
+
 <html>
-<script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
-<script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+
+<head>
+  <title>Gesture Interactions - A-Frame & AR.js</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="stylesheet" href="styles.css">
+
+  <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+  <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+  <script src="gesture-detector.js"></script>
+  <script src="gesture-handler.js"></script>
+</head>
 
 <style>
-    .btn {
-        color: hsl(0, 0%, 100%);
-        padding: 9px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 12px;
-        font-weight: bold;
-        margin: 4px 2px;
-        cursor: pointer;
-        border-radius: 12px;
-        border: 3px solid hsl(176, 68%, 64%);
-        outline: none;
-        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-        transition: background-color 0.2s ease-out,
-            color 0.2s ease-out;
-    }
+  .btn {
+    color: hsl(0, 0%, 100%);
+    padding: 9px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    font-weight: bold;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 12px;
+    border: 3px solid hsl(176, 68%, 64%);
+    outline: none;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    transition: background-color 0.2s ease-out,
+      color 0.2s ease-out;
+  }
 
-    .btn:hover,
-    .btn:active {
-        background-color: hsl(176, 68%, 64%);
-        /* color: hsl(0, 0%, 100%); */
-        color: hsl(216, 53%, 9%);
-        padding: 9px;
-        border-color: hsl(219, 30%, 18%);
-        font-weight: bold;
-        font-size: 12px;
-        transition: background-color 0.3s ease-in,
-            color 0.3s ease-in;
-    }
+  .btn:hover,
+  .btn:active {
+    background-color: hsl(176, 68%, 64%);
+    /* color: hsl(0, 0%, 100%); */
+    color: hsl(216, 53%, 9%);
+    padding: 9px;
+    border-color: hsl(219, 30%, 18%);
+    font-weight: bold;
+    font-size: 12px;
+    transition: background-color 0.3s ease-in,
+      color 0.3s ease-in;
+  }
 </style>
 
-<!-- <body> -->
-<div style='position: fixed; top: 10px; width:100%; text-align: center; z-index: 1;'>
+<body>
+
+  <div style='position: fixed; top: 10px; width:100%; text-align: center; z-index: 1;'>
     <!-- Botones en la parte superior -->
     <a class="btn" id="btn1">Grupo1</a>
     <a class="btn" id="btn2">Grupo2</a>
     <a class="btn" id="btn3">Grupo3</a>
-</div>
-<!-- esta es la Aplicación AR como tal -->
+  </div>
 
-<body style="margin : 0px; overflow: hidden;">
-    <a-scene vr-mode-ui="enabled: false" loading-screen="enabled: false;"
-        arjs='sourceType: webcam; debugUIEnabled: false;' id="scene" embedded gesture-detector>
-        <!-- <a-marker preset="hiro" id="marker"></a-marker> -->
-        <a-marker preset="hiro" id="marker" type="pattern" videohandler smooth="true" smoothCount="10"
-            smoothTolerance="0.01" smoothThreshold="5" raycaster="objects: .clickable" emitevents="true"
-            cursor="fuse: false; rayOrigin: mouse;"></a-marker>
-        <a-entity camera></a-entity>
-    </a-scene>
-</body>
+  <!-- esta es la Aplicación AR como tal -->
+  <a-scene arjs embedded renderer="logarithmicDepthBuffer: true;" vr-mode-ui="enabled: false" gesture-detector
+    id="scene">
+    <!-- <a-assets>
+      <a-asset-item id="bowser" src="./models/Duck/Duck.gltf">
+      </a-asset-item>
+    </a-assets> -->
 
+    <a-marker preset="hiro" raycaster="objects: .clickable" emitevents="true" cursor="fuse: false; rayOrigin: mouse;"
+      id="markerA">
+      <!-- <a-entity id="bowser-model" gltf-model="#bowser" position="0 0 0" scale="0.05 0.05 0.05" class="clickable"
+        gesture-handler>
+      </a-entity> -->
+    </a-marker>
+    <a-entity camera></a-entity>
+  </a-scene>
 
-<!-- Creamos los Botones y los EVENTOS -->
-<script>
-    var aMarker = document.querySelector('#marker')
-    var buttons = document.querySelectorAll('.buttons')
+  <script>
+
+    var aMarker = document.querySelector('#markerA')
     var btn1 = document.querySelector('#btn1')
     var btn2 = document.querySelector('#btn2')
     var aVideo = null
 
     eventListeners()
     function eventListeners() {
-        document.addEventListener('DOMContentLoaded', startedApp)
-        document.querySelector('#btn1').addEventListener('click', clickBtnOne)
-        document.querySelector('#btn2').addEventListener('click', clickBtnTwo)
-        document.querySelector('#btn3').addEventListener('click', clickBtnThree)
+      document.addEventListener('DOMContentLoaded', startedApp)
+      document.querySelector('#btn1').addEventListener('click', clickBtnOne)
+      document.querySelector('#btn2').addEventListener('click', clickBtnTwo)
+      document.querySelector('#btn3').addEventListener('click', clickBtnThree)
     }
+
 
     function startedApp() {
-        // Creamos el la rimera entidad para el inicio de la app
-        const elementStart = document.createElement("a-entity")
-        elementStart.id = "entityId"
-        elementStart.setAttribute("gltf-model",
-            'models/Duck/Duck.gltf');
-        elementStart.setAttribute("scale", '.5 .5 .5');
-        elementStart.setAttribute("rotation", '00 270 70')
-        elementStart.setAttribute("position", '0 0 0')
-        aMarker.appendChild(elementStart)
+      // Creamos el la rimera entidad para el inicio de la app
+      const elementStart = document.createElement("a-entity")
+      elementStart.id = "entityId"
+      elementStart.setAttribute("gltf-model",
+        'models/Duck/Duck.gltf');
+      elementStart.setAttribute("scale", '.5 .5 .5');
+      // elementStart.setAttribute("rotation", '00 270 70')
+      elementStart.setAttribute("position", '0 0 0')
+      elementStart.setAttribute("class", 'clickable')
+      elementStart.setAttribute("gesture-handler", '"minScale: 0.25; maxScale: 10"')
+      aMarker.appendChild(elementStart)
     }
-
 
     // gltf
     function clickBtnOne() {
 
-        limpiarHTML()
+      limpiarHTML()
 
-        // Creamos el la rimera entidad para el inicio de la app
-        const newElement = document.createElement("a-entity")
-        newElement.id = "entityId"
-        newElement.setAttribute("gltf-model",
-            'models/2021/17/43/1/1.gltf');
-        newElement.setAttribute("scale", '.50 .50 .50');
-        newElement.setAttribute("rotation", '100 70 70')
-        newElement.setAttribute("position", '0 0 0')
-        aMarker.appendChild(newElement)
+      // Creamos el la rimera entidad para el inicio de la app
+      const newElement = document.createElement("a-entity")
+      newElement.id = "entityId"
+      newElement.setAttribute("gltf-model",
+        'models/2021/17/43/1/1.gltf');
+      newElement.setAttribute("scale", '.50 .50 .50');
+     // newElement.setAttribute("rotation", '100 70 70')
+      newElement.setAttribute("position", '0 0 0')
+      newElement.setAttribute("class", 'clickable')
+      newElement.setAttribute("gesture-handler", '"minScale: 0.25; maxScale: 10"')
+      aMarker.appendChild(newElement)
     }
 
     // Video
     function clickBtnTwo() {
-        limpiarHTML()
+      limpiarHTML()
 
-        const elementV = document.createElement('video')
-        elementV.id = "video"
-        elementV.setAttribute("src",
-            'models/2021/17/43/3/3.mp4');
-        elementV.setAttribute('croosOrigin', "anonymous")
-        elementV.setAttribute('preload', "auto")
-        elementV.setAttribute("response-type", "arraybuffer")
-        // elementV.setAttribute("autoplay", "autoplay")
-        elementV.setAttribute("scale", '10 10 10');
-        aMarker.appendChild(elementV)
+      const elementV = document.createElement('video')
+      elementV.id = "video"
+      elementV.setAttribute("src",
+        'models/2021/17/43/3/3.mp4');
+      elementV.setAttribute('croosOrigin', "anonymous")
+      elementV.setAttribute('preload', "auto")
+      elementV.setAttribute("response-type", "arraybuffer")
+      // elementV.setAttribute("autoplay", "autoplay")
+      elementV.setAttribute("scale", '10 10 10');
+      aMarker.appendChild(elementV)
 
-        const newElement = document.createElement("a-video")
-        newElement.id = "entityId"
-        newElement.setAttribute("src",
-            '#video');
-        newElement.setAttribute("rotation", '270 0 0')
-        newElement.setAttribute("position", '0 0 0')
-        newElement.setAttribute("class", "clickable")
-        newElement.setAttribute("gesture-handler", "gesture-handler")
-        aMarker.appendChild(newElement)
+      const newElement = document.createElement("a-video")
+      newElement.id = "entityId"
+      newElement.setAttribute("src",
+        '#video');
+      newElement.setAttribute("rotation", '270 0 0')
+      newElement.setAttribute("position", '0 0 0')
+      newElement.setAttribute("class", "clickable")
+      newElement.setAttribute("gesture-handler", "gesture-handler")
+      aMarker.appendChild(newElement)
 
     }
 
@@ -134,42 +153,45 @@
 
 
     statusVideo.addEventListener("markerFound", (e) => {
-        aVideo = document.querySelector("a-video")
-        if (aVideo !== null) {
-            var v = document.querySelector("#video").play();
-        }
+      aVideo = document.querySelector("a-video")
+      if (aVideo !== null) {
+        var v = document.querySelector("#video").play();
+      }
     })
 
     // si nuestro marcador NO está en pantalla, el video se va a pausar
     statusVideo.addEventListener("markerLost", (e) => {
-        aVideo = document.querySelector("a-video")
-        if (aVideo !== null) {
-            //console.log('video', document.querySelector("#video"))
-            var v = document.querySelector("#video").pause();
-        }
+      aVideo = document.querySelector("a-video")
+      if (aVideo !== null) {
+        //console.log('video', document.querySelector("#video"))
+        var v = document.querySelector("#video").pause();
+      }
     })
 
     // obj
     function clickBtnThree() {
-        limpiarHTML()
+      limpiarHTML()
 
-        const elementStart = document.createElement("a-entity")
-        elementStart.id = "entityId"
-        elementStart.setAttribute("obj-model",
-            'obj:url(models/2021/17/43/2/2.obj)');
-        elementStart.setAttribute("scale", '.5 .5 .5');
-        elementStart.setAttribute("rotation", '115 100 100')
-        elementStart.setAttribute("position", '0 0 0')
-        aMarker.appendChild(elementStart)
+      const elementObj= document.createElement("a-entity")
+      elementObj.id = "entityId"
+      elementObj.setAttribute("obj-model",
+        'obj:url(./models/2021/17/43/2/2.obj)');
+      elementObj.setAttribute("scale", '.5 .5 .5');
+      // elementObj.setAttribute("rotation", '115 100 100')
+      elementObj.setAttribute("position", '0 1.5 0')
+      elementObj.setAttribute("class", 'clickable')
+      elementObj.setAttribute("gesture-handler", '"minScale: 0.25; maxScale: 10"')
+      aMarker.appendChild(elementObj)
     }
 
     function limpiarHTML() {
-        while (aMarker.firstChild) {
-            aMarker.removeChild(aMarker.firstChild)
-        }
+      while (aMarker.firstChild) {
+        aMarker.removeChild(aMarker.firstChild)
+      }
     }
 
-</script>
+  </script>
 
+</body>
 
 </html>
