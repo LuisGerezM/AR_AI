@@ -2,10 +2,10 @@
 
 AFRAME.registerComponent("gesture-detector", {
   schema: {
-    element: { default: "" }
+    element: { default: "" },
   },
 
-  init: function() {
+  init: function () {
     this.targetElement =
       this.data.element && document.querySelector(this.data.element);
 
@@ -14,7 +14,7 @@ AFRAME.registerComponent("gesture-detector", {
     }
 
     this.internalState = {
-      previousState: null
+      previousState: null,
     };
 
     this.emitGestureEvent = this.emitGestureEvent.bind(this);
@@ -26,7 +26,7 @@ AFRAME.registerComponent("gesture-detector", {
     this.targetElement.addEventListener("touchmove", this.emitGestureEvent);
   },
 
-  remove: function() {
+  remove: function () {
     this.targetElement.removeEventListener("touchstart", this.emitGestureEvent);
 
     this.targetElement.removeEventListener("touchend", this.emitGestureEvent);
@@ -77,8 +77,8 @@ AFRAME.registerComponent("gesture-detector", {
         positionChange: {
           x: currentState.position.x - previousState.position.x,
 
-          y: currentState.position.y - previousState.position.y
-        }
+          y: currentState.position.y - previousState.position.y,
+        },
       };
 
       if (currentState.spread) {
@@ -100,7 +100,7 @@ AFRAME.registerComponent("gesture-detector", {
     }
   },
 
-  getTouchState: function(event) {
+  getTouchState: function (event) {
     if (event.touches.length === 0) {
       return null;
     }
@@ -114,7 +114,7 @@ AFRAME.registerComponent("gesture-detector", {
     }
 
     const touchState = {
-      touchCount: touchList.length
+      touchCount: touchList.length,
     };
 
     // Calculate center of all current touches
@@ -135,7 +135,7 @@ AFRAME.registerComponent("gesture-detector", {
 
     touchState.position = {
       x: centerPositionRawX * screenScale,
-      y: centerPositionRawY * screenScale
+      y: centerPositionRawY * screenScale,
     };
 
     // Calculate average spread of touches from the center point
@@ -162,5 +162,5 @@ AFRAME.registerComponent("gesture-detector", {
     const numberNames = ["one", "two", "three", "many"];
 
     return numberNames[Math.min(touchCount, 4) - 1];
-  }
+  },
 });

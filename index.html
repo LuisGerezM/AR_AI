@@ -14,66 +14,6 @@
   <script src="gesture-handler.js"></script>
 </head>
 
-<style>
-  body {
-    margin: auto !important;
-    overflow: hidden;
-  }
-
-  .container {
-    position: fixed;
-    top: 10px;
-    width: 100%;
-    text-align: center;
-    z-index: 1;
-  }
-
-
-  .btn {
-    color: hsl(0, 0%, 100%);
-    padding: 9px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 12px;
-    font-weight: bold;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 12px;
-    border: 3px solid hsl(176, 68%, 64%);
-    outline: none;
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    transition: background-color 0.2s ease-out, color 0.2s ease-out;
-  }
-
-  .btn:hover,
-  .btn:active {
-    background-color: hsl(176, 68%, 64%);
-    /* color: hsl(0, 0%, 100%); */
-    color: hsl(216, 53%, 9%);
-    padding: 9px;
-    border-color: hsl(219, 30%, 18%);
-    font-weight: bold;
-    font-size: 12px;
-    transition: background-color 0.3s ease-in, color 0.3s ease-in;
-  }
-
-  @media screen and (min-width: 150px) and (max-width:580px) {
-    .btn {
-      color: hsl(0, 0%, 100%);
-      padding: 4px;
-      display: inline-block;
-      font-size: 10px;
-    }
-
-    .btn:hover,
-    .btn:active {
-      padding: 4px;
-      font-size: 10px;
-    }
-  }
-</style>
-
 <body>
 
   <div class="container">
@@ -86,138 +26,16 @@
   <!-- esta es la Aplicación AR como tal -->
   <a-scene arjs embedded renderer="logarithmicDepthBuffer: true;" vr-mode-ui="enabled: false" gesture-detector
     id="scene">
-    <!-- <a-assets>
-      <a-asset-item id="bowser" src="./models/Duck/Duck.gltf">
-      </a-asset-item>
-    </a-assets> -->
 
     <a-marker preset="hiro" raycaster="objects: .clickable" emitevents="true" cursor="fuse: false; rayOrigin: mouse;"
       id="markerA">
-      <!-- <a-entity id="bowser-model" gltf-model="#bowser" position="0 0 0" scale="0.05 0.05 0.05" class="clickable"
-        gesture-handler>
-      </a-entity> -->
     </a-marker>
+
     <a-entity camera></a-entity>
+
   </a-scene>
 
-  <script>
-
-    var aMarker = document.querySelector('#markerA')
-    var btn1 = document.querySelector('#btn1')
-    var btn2 = document.querySelector('#btn2')
-    var aVideo = null
-
-    eventListeners()
-    function eventListeners() {
-      document.addEventListener('DOMContentLoaded', startedApp)
-      document.querySelector('#btn1').addEventListener('click', clickBtnOne)
-      document.querySelector('#btn2').addEventListener('click', clickBtnTwo)
-      document.querySelector('#btn3').addEventListener('click', clickBtnThree)
-    }
-
-
-    function startedApp() {
-      // Creamos el la rimera entidad para el inicio de la app
-      const elementStart = document.createElement("a-entity")
-      elementStart.id = "entityId"
-      elementStart.setAttribute("gltf-model",
-        'models/Duck/Duck.gltf');
-      elementStart.setAttribute("scale", '.5 .5 .5');
-      // elementStart.setAttribute("rotation", '00 270 70')
-      elementStart.setAttribute("position", '0 0 0')
-      elementStart.setAttribute("class", 'clickable')
-      elementStart.setAttribute("gesture-handler", '"minScale: 0.25; maxScale: 10"')
-      aMarker.appendChild(elementStart)
-    }
-
-    // gltf
-    function clickBtnOne() {
-
-      limpiarHTML()
-
-      // Creamos el la rimera entidad para el inicio de la app
-      const newElement = document.createElement("a-entity")
-      newElement.id = "entityId"
-      newElement.setAttribute("gltf-model",
-        'models/2021/17/43/1/1.gltf');
-      newElement.setAttribute("scale", '.50 .50 .50');
-      // newElement.setAttribute("rotation", '100 70 70')
-      newElement.setAttribute("position", '0 0 0')
-      newElement.setAttribute("class", 'clickable')
-      newElement.setAttribute("gesture-handler", '"minScale: 0.25; maxScale: 10"')
-      aMarker.appendChild(newElement)
-    }
-
-    // Video
-    function clickBtnTwo() {
-      limpiarHTML()
-
-      const elementV = document.createElement('video')
-      elementV.id = "video"
-      elementV.setAttribute("src",
-        'models/2021/17/43/3/3.mp4');
-      elementV.setAttribute('croosOrigin', "anonymous")
-      elementV.setAttribute('preload', "auto")
-      elementV.setAttribute("response-type", "arraybuffer")
-      // elementV.setAttribute("autoplay", "autoplay")
-      elementV.setAttribute("scale", '10 10 10');
-      aMarker.appendChild(elementV)
-
-      const newElement = document.createElement("a-video")
-      newElement.id = "entityId"
-      newElement.setAttribute("src",
-        '#video');
-      newElement.setAttribute("rotation", '270 0 0')
-      newElement.setAttribute("position", '0 0 0')
-      newElement.setAttribute("class", "clickable")
-      newElement.setAttribute("gesture-handler", "gesture-handler")
-      aMarker.appendChild(newElement)
-
-    }
-
-    // Cuando nuestra camara vea el marcador, va a dar play al video
-    var statusVideo = document.querySelector("a-marker")
-
-
-    statusVideo.addEventListener("markerFound", (e) => {
-      aVideo = document.querySelector("a-video")
-      if (aVideo !== null) {
-        var v = document.querySelector("#video").play();
-      }
-    })
-
-    // si nuestro marcador NO está en pantalla, el video se va a pausar
-    statusVideo.addEventListener("markerLost", (e) => {
-      aVideo = document.querySelector("a-video")
-      if (aVideo !== null) {
-        //console.log('video', document.querySelector("#video"))
-        var v = document.querySelector("#video").pause();
-      }
-    })
-
-    // obj
-    function clickBtnThree() {
-      limpiarHTML()
-
-      const elementObj = document.createElement("a-entity")
-      elementObj.id = "entityId"
-      elementObj.setAttribute("obj-model",
-        'obj:url(./models/2021/17/43/2/2.obj)');
-      elementObj.setAttribute("scale", '.5 .5 .5');
-      elementObj.setAttribute("rotation", '115 100 100')
-      elementObj.setAttribute("position", '0 0 0')
-      elementObj.setAttribute("class", 'clickable')
-      elementObj.setAttribute("gesture-handler", '"minScale: 0.25; maxScale: 10"')
-      aMarker.appendChild(elementObj)
-    }
-
-    function limpiarHTML() {
-      while (aMarker.firstChild) {
-        aMarker.removeChild(aMarker.firstChild)
-      }
-    }
-
-  </script>
+  <script src="index.js"></script>
 
 </body>
 
