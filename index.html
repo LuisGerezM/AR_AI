@@ -6,22 +6,72 @@
   <title>Gesture Interactions - A-Frame & AR.js</title>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous"> -->
+
 
   <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
   <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-  <script src="gesture-detector.js"></script>
-  <script src="gesture-handler.js"></script>
+  <script src="assets/js/gesture-detector.js"></script>
+  <script src="assets/js/gesture-handler.js"></script>
+
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+    crossorigin="anonymous"></script>
 </head>
 
 <body>
 
   <div class="container">
     <!-- Botones en la parte superior -->
-    <a class="btn" id="btn1">Grupo1</a>
-    <a class="btn" id="btn2">Grupo2</a>
-    <a class="btn" id="btn3">Grupo3</a>
+    <a class="button" id="btn1">Grupo1</a>
+    <a class="button" id="btn2">Grupo2</a>
+    <a class="button" id="btn3">Grupo3</a>
+
+
+    <div class="info" style="display: none;">
+      <!-- Open modal -->
+      <a class="btn-information" id="btn-information" data-bs-toggle="modal" data-bs-target="#model-modal">👀</a>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="model-modal" tabindex="-1" aria-labelledby="model-modal-label" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="model-modal-label">Modelo Observado</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="model-modalTextarea" class="form-label">Extracto</label>
+              <textarea class="form-control" id="model-modalTextarea" rows="3" disabled
+                readonly>Una gema, también llamada piedra preciosa, es una roca, mineral, vidrio o producto orgánico de origen natural, que al ser cortado o pulido se puede usar en la confección de joyas u objetos artísticos. Son piedras preciosas minerales como por ejemplo... </textarea>
+            </div>
+            <p><a href="https://es.wikipedia.org/wiki/Gema" class="tooltip-test" title="Tooltip" target="_blank">Hace
+                click aquí para mas info sobre el tema</a> </p>
+            <hr>
+            <h5>Agregá el link al documento donde estará su respuesta</h5>
+            <p>
+              <input class="form-control form-control-sm" type="text" placeholder="Pegar link aquí"
+                aria-label=".form-control-sm example" name="document-response-group">
+
+            </p>
+            <button type="button" class="btn-save-modal">Guardar</button>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn-close-modal" data-bs-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
+
+
 
   <!-- esta es la Aplicación AR como tal -->
   <a-scene arjs embedded renderer="logarithmicDepthBuffer: true;" vr-mode-ui="enabled: false" gesture-detector
@@ -29,13 +79,20 @@
 
     <a-marker preset="hiro" raycaster="objects: .clickable" emitevents="true" cursor="fuse: false; rayOrigin: mouse;"
       id="markerA">
+      <a-entity id="entityId" position="0 0 0" scale=".5 .5 .5" rotation="00 270 70"
+        gltf-model="assets/models/Duck/Duck.gltf">
+      </a-entity>
     </a-marker>
 
-    <a-entity camera></a-entity>
+    <a-entity camera>
+      <!-- acordate q esto t pone un circulito en el medio, seguro si tocas ahi te da el doble click; sino poner un cuardo
+      mediano tamaño invisible para q si da click en el mismo abra el modal -->
+      <a-entity cursor></a-entity>
+    </a-entity>
 
   </a-scene>
 
-  <script src="index.js"></script>
+  <script src="assets/js/index.js"></script>
 
 </body>
 
