@@ -33,24 +33,30 @@
 
     <div class="info" style="display: none;">
       <!-- Open modal -->
-      <a class="btn-information" id="btn-information" data-bs-toggle="modal" data-bs-target="#model-modal">👀</a>
+      <a class="btn-information" id="btn-information" data-bs-toggle="modal" data-bs-target="#model-modal">
+        <img class="img-information" src="assets/img/information.gif">
+      </a>
     </div>
 
     <!-- Modal -->
     <div class="modal fade" id="model-modal" tabindex="-1" aria-labelledby="model-modal-label" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
-          
+
           <div class="modal-header">
+            <img class="emoticon-perfect" src="assets/img/perfect.gif">
             <h5 class="modal-title" id="model-modal-label">Modelo Observado</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
 
           <div class="modal-body">
+
             <div class="mb-3">
-              <label for="model-modalTextarea" class="form-label">Extracto</label>
-              <textarea class="form-control" id="model-modalTextarea" rows="3" disabled
-                readonly>Una gema, también llamada piedra preciosa, es una roca, mineral, vidrio o producto orgánico de origen natural, que al ser cortado o pulido se puede usar en la confección de joyas u objetos artísticos. Son piedras preciosas minerales como por ejemplo... 
+
+              <label for="model-modalTextarea" class="form-label label-extracto">
+                Extracto
+              </label>
+              <textarea class="form-control" id="model-modalTextarea" rows="3" disabled readonly>Una gema, también llamada piedra preciosa, es una roca, mineral, vidrio o producto orgánico de origen natural, que al ser cortado o pulido se puede usar en la confección de joyas u objetos artísticos. Son piedras preciosas minerales como por ejemplo... 
               </textarea>
             </div>
             <p>
