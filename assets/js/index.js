@@ -5,64 +5,47 @@ var aVideo = null;
 let click = 0;
 let firstClick = false;
 
-// function startedApp() {
-//   // Creamos el la primera entidad para el inicio de la app
-//   const elementStart = document.createElement("a-entity");
-//   elementStart.id = "entityId";
-//   elementStart.setAttribute("gltf-model", "assets/models/Duck/Duck.gltf");
-//   elementStart.setAttribute("scale", ".5 .5 .5");
-//   elementStart.setAttribute("position", "0 0 0");
-//   elementStart.setAttribute("class", "clickable");
-//   elementStart.setAttribute(
-//     "gesture-handler",
-//     "'minScale: 0.25; maxScale: 10'"
-//   );
-//   elementStart.setAttribute("ondblclick", "doubleClickModel()");
-//   aMarker.appendChild(elementStart);
-
-// }
+function startedApp() {
+  // Creamos el la primera entidad para el inicio de la app
+  const elementStart = document.createElement("a-entity");
+  elementStart.id = "entityId";
+  elementStart.setAttribute("gltf-model", "assets/models/Duck/Duck.gltf");
+  elementStart.setAttribute("scale", ".5 .5 .5");
+  elementStart.setAttribute("position", "0 0 0");
+  elementStart.setAttribute("class", "clickable");
+  elementStart.setAttribute(
+    "gesture-handler",
+    "'minScale: 0.25; maxScale: 10'"
+  );
+  elementStart.setAttribute("ondblclick", "doubleClickModel()");
+  aMarker.appendChild(elementStart);
+}
 
 eventListeners();
 function eventListeners() {
-  // document.addEventListener("DOMContentLoaded", startedApp);
+  document.addEventListener("DOMContentLoaded", startedApp);
   document.querySelector("#btn1").addEventListener("click", clickBtnOne);
   document.querySelector("#btn2").addEventListener("click", clickBtnTwo);
   document.querySelector("#btn3").addEventListener("click", clickBtnThree);
-  // document.querySelector(".info")?.addEventListener("click", clickBtnInfo); // YA ABRO EL MODAL DESDE HTML
-  // if (document.querySelector(".info")) {
-  //   console.log("existe el btn con clase info");
-  // } else {
-  //   console.log("NO existe el btn con clase info");
-  // }
 }
 
-// function clickBtnInfo(e) {
-//   e.preventDefault();
-//   console.log("clickBtnInfo -> Abre MODAL", clickBtnInfo);
-//   console.log("clickBtnInfo e", e);
-// }
-
 // gltf
-function clickBtnOne() {
+function clickBtnOne(e) {
   // Detectamos doble click
-
+  e.preventDefault();
   click++;
   setTimeout(() => {
     if (click > 1) {
       console.log("firstClick en  dbleclick", firstClick);
       if (firstClick) {
-        // si ya dió 1 vez un click para mostrar el modelo
-        console.log("doble click");
+        // si se clickeo al menos 1 vez
         const selectInfo = document.querySelector(".info");
         selectInfo.style.display = "flex";
-        // console.log("info", selectInfo);
         const num = Math.random() * 10;
-        console.log("num", num);
+
         if (num > 5) {
-          // console.log("mayor a 5");
           selectInfo.style.justifyContent = "flex-start";
         } else {
-          // console.log("no mayor");
           selectInfo.style.justifyContent = "flex-end";
         }
       } else {
@@ -73,7 +56,7 @@ function clickBtnOne() {
       // Reiniciamos bandera
       firstClick = false;
     } else if (click === 1) {
-      console.log("un click");
+      // se clickeo
       firstClick = true;
       limpiarHTML();
       // Creamos la entidad del grupo 1
@@ -149,6 +132,11 @@ statusVideo.addEventListener("markerLost", (e) => {
 // obj
 function clickBtnThree() {
   limpiarHTML();
+
+  const selectInfo = document.querySelector(".info");
+  if (selectInfo) {
+    selectInfo.style.display = "none";
+  }
 
   // Creamos la entidad del grupo 3
   const elementObj = document.createElement("a-entity");
